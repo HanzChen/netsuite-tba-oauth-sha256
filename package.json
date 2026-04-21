@@ -1,6 +1,6 @@
 {
 	"name": "netsuite-tba-oauth-sha256",
-	"version": "1.0.0",
+	"version": "1.1.0",
 	"description": "NetSuite Token Based Authentication Module",
 	"main": "app.js",
 	"scripts": {
@@ -23,8 +23,8 @@
 	},
 	"homepage": "https://github.com/HanzChen/netsuite-tba-oauth-sha256",
 	"dependencies": {
-		"oauth-1.0a": "^2.2.6",
-		"request": "^2.88.0"
+		"axios": "^1.7.9",
+		"oauth-1.0a": "^2.2.6"
 	},
 	"publishConfig": {
 		"registry": "https://npm.pkg.github.com/"

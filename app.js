@@ -1,8 +1,8 @@
 'use strict';
 
 // Dependencies
-const request = require('request');
-const OAuth = require('oauth-1.0a');
+const axios  = require('axios');
+const OAuth  = require('oauth-1.0a');
 const crypto = require('crypto');
 
 module.exports = NetSuiteOAuth;
@@ -10,14 +10,13 @@ module.exports = NetSuiteOAuth;
 /**
  * Constructor
  *
- * @param url
- * @param method
- * @param consumerKey
- * @param consumerSecret
- * @param tokenId
- * @param tokenSecret
- * @param account
- * @returns {PromiseLike<ArrayBuffer>}
+ * @param {string} url
+ * @param {string} method   HTTP verb (GET, POST, PUT, PATCH, DELETE)
+ * @param {string} consumerKey
+ * @param {string} consumerSecret
+ * @param {string} tokenId
+ * @param {string} tokenSecret
+ * @param {string} account  NetSuite account ID (used as OAuth realm)
  * @constructor
  */
 function NetSuiteOAuth(url, method, consumerKey, consumerSecret, tokenId, tokenSecret, account) {
@@ -48,77 +47,45 @@ function NetSuiteOAuth(url, method, consumerKey, consumerSecret, tokenId, tokenS
 }
 
 NetSuiteOAuth.prototype.get = function () {
-    return new Promise((resolve, reject) => {
-        request({
-            url: this.request_data.url,
-            method: this.request_data.method,
-            headers: this.headers
-        }, function (error, response, body) {
-            if (error || response.statusCode.toString()[0] != 2) {
-                console.log('Body data:', body);
-                reject(body || error);
-            }
-            else {
-                if (typeof body == 'string') body = JSON.parse(body);
-                resolve(body || error);
-            }
-        });
-
+    return axios({
+        url:     this.request_data.url,
+        method:  this.request_data.method,
+        headers: this.headers
+    })
+    .then(response => response.data)
+    .catch(err => {
+        const body = err.response ? err.response.data : err.message;
+        console.log('Body data:', body);
+        return Promise.reject(body || err);
     });
 };
 
 NetSuiteOAuth.prototype.post = function (data) {
-    return new Promise((resolve, reject) => {
-        request({
-            url: this.request_data.url,
-            method: this.request_data.method,
-            json: data,
-            headers: this.headers
-        }, function (error, response, body) {
-            if (error || response.statusCode.toString()[0] != 2) {
-                console.log('Body data:', body);
-                reject(body || error);
-            }
-            else {
-                if (typeof body == 'string') {
-                    try {
-                        body = JSON.parse(body);
-                    } catch (error) {
-                        console.log('unable to parse response body');
-                        reject(error);
-                    }
-                }
-                resolve(body || error);
-            }
-        });
-
+    return axios({
+        url:     this.request_data.url,
+        method:  this.request_data.method,
+        data:    data,
+        headers: this.headers
+    })
+    .then(response => response.data)
+    .catch(err => {
+        const body = err.response ? err.response.data : err.message;
+        console.log('Body data:', body);
+        return Promise.reject(body || err);
     });
 };
 
 NetSuiteOAuth.prototype.put = function (data) {
-    return new Promise((resolve, reject) => {
-        request({
-            url: this.request_data.url,
-            method: this.request_data.method,
-            json: data,
-            headers: this.headers
-        }, function (error, response, body) {
-            if (error || response.statusCode.toString()[0] != 2) {
-                console.log('Body data:', body);
-                reject(body || error);
-            }
-            else {
-                if (typeof body == 'string') {
-                    try {
-                        body = JSON.parse(body);
-                    } catch (error) {
-                        console.log('unable to parse response body');
-                        reject(error);
-                    }
-                }
-                resolve(body || error);
-            }
-        });
-
+    return axios({
+        url:     this.request_data.url,
+        method:  this.request_data.method,
+        data:    data,
+        headers: this.headers
+    })
+    .then(response => response.data)
+    .catch(err => {
+        const body = err.response ? err.response.data : err.message;
+        console.log('Body data:', body);
+        return Promise.reject(body || err);
     });
 };
